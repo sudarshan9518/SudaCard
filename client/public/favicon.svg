@@ -1,0 +1,27 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Luxury green gradient -->
+    <linearGradient id="luxGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2aff9d"></stop>
+      <stop offset="50%" stop-color="#00c853"></stop>
+      <stop offset="100%" stop-color="#1b5e20"></stop>
+    </linearGradient>
+
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"></feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="coloredBlur"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fancy calligraphic S -->
+  <path d="M180 50
+       C110 30, 60 80, 120 115
+       C190 155, 150 205, 85 225
+       C30 245, 80 280, 160 255
+       C250 220, 210 150, 135 120
+       C80 90, 120 50, 180 50 Z" fill="url(#luxGreen)" filter="url(#glow)"></path>
+</svg>
