@@ -17,6 +17,30 @@ export const AppContextProvider = ({children})=>{
     const [cartItems, setcartItems]= useState({});
     const [searchQuery, setSearchQuery]= useState({});
 
+    // total cart amount
+    const getCartAmount = ()=>{
+        let totalAmount = 0;
+        for(const items in cartItems){
+            let itemInfo = products.find((product)=> product._id === items)
+
+            if(cartItems[items] > 0){
+                totalAmount += itemInfo.offerPrice * cartItems[items]
+            }
+
+        }
+
+        return Math.floor(totalAmount * 100) / 100;   //123.451234 * 100 = 12345  = / 100= 123.45
+
+    }
+
+    // get cart item count
+    const getCartCount = ()=>{
+        let totalcount =0;
+        for(const item in cartItems){
+            totalcount += cartItems[item]
+        }
+        return totalcount;
+    }
 
     // fetch all product
     const fetchProducts = async()=>{
@@ -70,7 +94,7 @@ export const AppContextProvider = ({children})=>{
         fetchProducts()
     },[])
 
-    const value = {navigate, user,setUser, isSeller, setIsSeller, showUserLogin, setShowUserLogin, products, currency, addToCart, updateCartItem, removeFromCart, cartItems, searchQuery, setSearchQuery
+    const value = {navigate, user,setUser, isSeller, setIsSeller, showUserLogin, setShowUserLogin, products, currency, addToCart, updateCartItem, removeFromCart, cartItems, searchQuery, setSearchQuery, getCartCount , getCartAmount
 
     }
     return <AppContext.Provider value={value}>
