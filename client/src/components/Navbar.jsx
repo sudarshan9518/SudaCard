@@ -43,7 +43,7 @@ const Navbar = () => {
       isActive
         ? "border-b-3 border-primary "
         : "border-b-3 border-transparent"
-    }`
+}`
   }  to='/products'>All Products</NavLink>
             <NavLink  className={({ isActive }) =>
     `pb-1 ${
