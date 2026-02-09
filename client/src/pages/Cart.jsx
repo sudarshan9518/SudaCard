@@ -96,6 +96,7 @@ const Cart = () => {
                 if(data.success){
                     
                   window.location.replace(data.url)
+                    setcartItems({})
                     
 
                 }else{

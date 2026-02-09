@@ -10,6 +10,7 @@ import productRouter from './routes/ProductRoutes.js';
 import cartRouter from './routes/CartRoutes.js';
 import addressRouter from './routes/AddressRoute.js';
 import orderRouter from './routes/OrderRoutes.js';
+import { stripeWebHook } from './controllers/OrderController.js';
 
 const app= express()
 
@@ -20,8 +21,10 @@ const port = process.env.PORT || 4000;
 
 // allow multiple origins
 const allowedOrigins=['http://localhost:5173']
-// middleware config
 
+app.post('/stripe', express.raw({type:'application/json'}), stripeWebHook)
+
+// middleware config
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
