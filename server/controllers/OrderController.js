@@ -139,7 +139,8 @@ export const placeOrderStripe = async (req, res)=>{
         // stripe gatway initialize
         const stripeInstance =  new stripe(process.env.STRIPE_SECRET_KEY)
 
-        const sig = request.headers["stripe=signature"]
+       const sig = request.headers["stripe-signature"] 
+
         let event;
         try{
             event = stripeInstance.webhooks.constructEvent(
@@ -197,7 +198,7 @@ export const placeOrderStripe = async (req, res)=>{
                 
                 break;
         }
-        response.json({recived:true})
+        response.status(200).json({ received: true })
 
     }
 
