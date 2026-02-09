@@ -1,7 +1,7 @@
 import Address from "../models/Address.js"
 // add address api/address/add
 
-export const addAddress = async(ewq, res)=>{
+export const addAddress = async(req, res)=>{
     try{
 
         const {userId} = req
@@ -23,11 +23,11 @@ export const addAddress = async(ewq, res)=>{
 }
 
 // get address  /api/address/get
-export const getAddress = async(ewq, res)=>{
+export const getAddress = async(req, res)=>{
 
     try{
             const { userId} = req
-            const addresses = await Address.find({userId})
+            const addresses = await Address.find({userId}).sort({createdAt:-1})
 
              res.json({success:true, addresses})
     }

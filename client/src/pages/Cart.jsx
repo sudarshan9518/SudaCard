@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react"
 import { useAppContext } from "../context/AppContext"
 import { assets, dummyAddress } from "../assets/assets"
+import toast from "react-hot-toast"
 
 
 const Cart = () => {
-     const {products, currency , cartItems, removeFromCart, getCartCount, updateCartItem, navigate, getCartAmount} = useAppContext()
+     const {products, currency , cartItems, removeFromCart, getCartCount, updateCartItem, navigate, getCartAmount, axios, user, setcartItems} = useAppContext()
 
     const [showAddress, setShowAddress] = useState(false)
     const [cartArray, setCartArray] = useState([])
-    const [addresses, setAdresses]= useState([dummyAddress])
-    const [selectedAddres, setSelectedAdrdress]= useState(dummyAddress[0])
+    const [addresses, setAdresses]= useState([])
+    const [selectedAddres, setSelectedAdrdress]= useState(null)
     const [paymentOption, setPaymentOption]= useState("COD")
 
     const getCart = ()=>{
@@ -34,7 +35,79 @@ const Cart = () => {
 
     }, [products, cartItems])
 
+    const getUserAddress= async()=>{
+        try{
+            const{data} = await axios.get('/api/address/get')
+            if(data.success){
+                setAdresses(data.addresses)
+                if(data.addresses.length >0){
+                    setSelectedAdrdress(data.addresses[0])
+                }
+            }else{
+                toast.error(data.message)
+            }
+
+        }
+        catch(e){
+                toast.error(e.message)
+
+
+        }
+    }
+    useEffect(()=>{
+     if(user){
+        getUserAddress()
+     }
+    }, [user])
+
     const placeOrder = async ()=>{
+        try{
+            if(!selectedAddres){
+                return toast.error("please select address")
+            }
+            // place order with COD
+            if(paymentOption==='COD'){
+                const {data}= await axios.post('/api/order/cod',{
+                    userId: user._id,
+                    items:cartArray.map(item=>({product:item._id, quantity:item.quantity})),
+                    address : selectedAddres._id
+
+                })
+                if(data.success){
+                    toast.success(data.message)
+                    setcartItems({})
+                    navigate('/my-orders')
+                    
+
+                }else{
+                    toast.error(data.message)
+                }
+            }
+            else{
+
+                // place order with a stripe
+
+                  const {data}= await axios.post('/api/order/stripe',{
+                    userId: user._id,
+                    items:cartArray.map(item=>({product:item._id, quantity:item.quantity})),
+                    address : selectedAddres._id
+
+                })
+                if(data.success){
+                    
+                  window.location.replace(data.url)
+                    
+
+                }else{
+                    toast.error(data.message)
+                }
+
+            }
+
+        }catch(e){
+            toast.error(e.message)
+
+        }
 
     }
 
@@ -54,7 +127,7 @@ const Cart = () => {
                 {cartArray.map((product, index) => (
                     <div key={index} className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3">
                         <div className="flex items-center md:gap-6 gap-3">
-                            <div onClick={()=>{navigate(`/prodcts/${product.category.toLowerCase()}/${product._id}`); scrollTo(0,0)}} className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
+                            <div onClick={()=>{navigate(`/products/${product.category.toLowerCase()}/${product._id}`); scrollTo(0,0)}} className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
                                 <img className="max-w-full h-full object-cover" src={product.image[0]} alt={product.name} />
                             </div>
                             <div>
@@ -100,7 +173,7 @@ const Cart = () => {
                         </button>
                         {showAddress && (
                             <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                              {addresses.map((address, index)=>(
+                              {addresses.slice(0,5).map((address, index)=>(
                                  <p key={index} onClick={() =>{ setSelectedAdrdress(address); setShowAddress(false)}} className="text-gray-500 p-2 hover:bg-gray-100">
                                    {address.street}, {address.city},{address.state}, {address.country}
                                 </p>
