@@ -6,8 +6,8 @@ import Product from "../models/Product.js"
 // place order cod   api/order/cod
 export const placeOrderCOD = async (req, res)=>{
     try{
-
-        const{userId, items, address}= req.body
+        const {userId} = req
+        const{ items, address}= req.body
 
         if(!address || items.length===0){
             return res.json({
@@ -50,7 +50,7 @@ export const placeOrderCOD = async (req, res)=>{
 // get order by user id api/order/user
 export const getUserOrders = async(req, res)=>{
     try{
-        const{userId} = req.body;
+        const{userId} = req
 
         const orders = await Order.find({userId, 
             $or:[{paymentType:"COD"}, {isPaid:true}]

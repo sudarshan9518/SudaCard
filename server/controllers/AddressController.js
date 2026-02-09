@@ -4,7 +4,8 @@ import Address from "../models/Address.js"
 export const addAddress = async(ewq, res)=>{
     try{
 
-        const {address, userId} = req.body
+        const {userId} = req
+        const {address} = req.body
 
         await Address.create({...address, userId})
         res.json({success:true, message:"address added successfully"})
@@ -25,7 +26,7 @@ export const addAddress = async(ewq, res)=>{
 export const getAddress = async(ewq, res)=>{
 
     try{
-            const { userId} = req.body
+            const { userId} = req
             const addresses = await Address.find({userId})
 
              res.json({success:true, addresses})

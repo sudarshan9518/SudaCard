@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const [state, setState] = React.useState("login");
@@ -7,16 +8,36 @@ const Login = () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const {setShowUserLogin, setUser} = useAppContext()
+    const {setShowUserLogin, setUser, axios, navigate} = useAppContext()
 
     const onSubmitHandler = async (event)=>{
-        event.preventDefault()
-        setUser({
-            email : "test@123.com",
-            name: "sudarshan"
+        try{
+           event.preventDefault()
 
-        })
-        setShowUserLogin(false)
+           const {data} = await axios.post(`/api/user/${state}`, {
+            name , email, password
+           })
+
+           if(data.success){
+            navigate('/')
+            setUser(data.user)
+           setShowUserLogin(false)
+
+
+           }else{
+            toast.error(data.message)
+
+           }
+
+
+
+
+
+       }
+       catch(e){
+
+        toast.error(e.message)
+       }
 
     }
 
