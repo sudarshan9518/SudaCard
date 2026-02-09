@@ -50,8 +50,7 @@ export const placeOrderCOD = async (req, res)=>{
 // placed order stripe
 export const placeOrderStripe = async (req, res)=>{
     try{
-        const {userId} = req.body
-        const{ items, address}= req.body
+        const{ items, address,userId}= req.body
 
         const {origin} =  req.headers
 
@@ -70,7 +69,7 @@ export const placeOrderStripe = async (req, res)=>{
                 name :product.name,
                 price:product.offerPrice,
                 quantity : item.quantity
-            })
+            });
 
             return (await acc)+ product.offerPrice * item.quantity;
         },0)
@@ -136,22 +135,22 @@ export const placeOrderStripe = async (req, res)=>{
 }
 
  // stripe webhook to verify the payment : /stripe
-    export const stripeWebHook = async(req, res)=>{
+    export const stripeWebHook = async(request, response)=>{
         // stripe gatway initialize
         const stripeInstance =  new stripe(process.env.STRIPE_SECRET_KEY)
 
-        const sig = req.headers["stripe=signature"]
+        const sig = request.headers["stripe=signature"]
         let event;
         try{
             event = stripeInstance.webhooks.constructEvent(
-                req.body,
+                request.body,
                 sig,
                 process.env.STRIPE_WEBHOOK_SECRET
             )
 
         }
         catch(e){
-            res.status(400).send(`webhook error : ${e.message}`)
+            response.status(400).send(`webhook error : ${e.message}`)
 
         }
 
@@ -170,10 +169,11 @@ export const placeOrderStripe = async (req, res)=>{
                 const {orderId, userId} = session.data[0].metadata;
 
                 // mark pyment as paid
-                await Order.findByIdAndUpdate(orderId, {isPaid:true})
+                await Order.findByIdAndUpdate(orderId, {isPaid: true})
 
                 // clear cart data
                 await User.findByIdAndUpdate(userId, {cartItems:{}})
+                break
 
             }
                 case "payment_intent.payment_failed":{
@@ -197,7 +197,7 @@ export const placeOrderStripe = async (req, res)=>{
                 
                 break;
         }
-        res.json({recived:true})
+        response.json({recived:true})
 
     }
 
