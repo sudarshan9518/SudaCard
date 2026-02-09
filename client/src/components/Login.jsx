@@ -67,9 +67,12 @@ const Login = () => {
                     Already have account? <span onClick={() => setState("login")} className="text-primary cursor-pointer">click here</span>
                 </p>
             ) : (
+                
                 <p>
                     Create an account? <span onClick={() => setState("register")} className="text-primary cursor-pointer">click here</span>
                 </p>
+              
+                
             )}
             <button className="bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-md cursor-pointer">
                 {state === "register" ? "Create Account" : "Login"}

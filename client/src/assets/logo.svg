@@ -1,37 +1,24 @@
-<svg width="520" height="140" viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" width="520" height="140">
   <defs>
-    <!-- Fresh green gradient -->
-    <linearGradient id="sudacardGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#6EE7B7"></stop>
       <stop offset="50%" stop-color="#22C55E"></stop>
       <stop offset="100%" stop-color="#166534"></stop>
     </linearGradient>
-
-    <!-- Soft glow -->
-    <filter id="softGlow">
-      <feGaussianBlur stdDeviation="3" result="blur"></feGaussianBlur>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3"></feGaussianBlur>
       <feMerge>
-        <feMergeNode in="blur"></feMergeNode>
+        <feMergeNode></feMergeNode>
         <feMergeNode in="SourceGraphic"></feMergeNode>
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Fancy S -->
-  <path d="M65 30
-       C30 20, 10 45, 35 60
-       C70 80, 55 100, 25 115
-       C0 130, 40 140, 75 125
-       C120 105, 105 75, 65 65
-       C30 55, 45 35, 65 30 Z" fill="url(#sudacardGreen)" filter="url(#softGlow)"></path>
+  <path d="M65 30C30 20 10 45 35 60c35 20 20 40-10 55s10 25 50 10 30-50-10-60-20-30 0-35z" fill="url(#g)" filter="url(#glow)"></path>
 
-  <!-- Brand Name -->
-  <text x="120" y="95" font-size="64" font-family="Poppins, Inter, Segoe UI, Arial, sans-serif" font-weight="700" letter-spacing="1.5" fill="url(#sudacardGreen)">
-    Sudacard
+  <text x="120" y="95" font-size="64" font-family="Poppins,Inter,Segoe UI,Arial,sans-serif" font-weight="700" letter-spacing="1.5" fill="url(#g)">
+    SudaCart
   </text>
 
-  <!-- Leaf accent -->
-  <path d="M410 40
-       C430 25, 460 30, 455 60
-       C430 75, 405 70, 410 40 Z" fill="#22C55E"></path>
+  <path d="M410 40c20-15 50-10 45 20-25 15-50 10-45-20z" fill="#22C55E"></path>
 </svg>
