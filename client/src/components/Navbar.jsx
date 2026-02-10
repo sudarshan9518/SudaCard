@@ -88,7 +88,7 @@ const Navbar = () => {
                         <ul className='hidden group-hover:block absolute top-10 right-0 bg-white shadow border border-gray-200 py-2.5 w-30 rounded-md tet-sm z-40 '>
                             <li onClick={()=>navigate('my-orders')} className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>My Order</li>
                             <li  onClick={Logout} className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'>Logout</li>
-                            <li   className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'><a href="/seller">as seller</a></li>
+                            <li   className='p-1.5 pl-3 hover:bg-primary/10 cursor-pointer'><a href="/seller" target="_blank">as seller</a></li>
                         </ul>
 
                     </div>
@@ -115,11 +115,11 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             { open && (
-            <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
+            <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden z-90`}>
                <NavLink to="/" onClick={()=>setOpen(false)}>Home</NavLink>
                <NavLink to="/products" onClick={()=>setOpen(false)}>All Product</NavLink>
                {user && 
-               <NavLink to="/my-order" onClick={()=>setOpen(false)}>My Orders</NavLink>}
+               <NavLink to="/my-orders" onClick={()=>setOpen(false)}>My Orders</NavLink>}
                 <NavLink to="/contact" onClick={()=>setOpen(false)}>Contact</NavLink>
 
                 {!user ?( <button onClick={()=>{setOpen(false);setShowUserLogin(true)}} className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-primary-dull transition text-white rounded-full text-sm">
